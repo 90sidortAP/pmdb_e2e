@@ -2,6 +2,8 @@
 Documentation  A test suite for PMDB login page.
 Library  SeleniumLibrary
 Resource  ../Resources/login_Resource.robot
+Variables  ../Variables/login_Variables.py
+Test Teardown  Close Browser
 *** Variables ***
 *** Test Cases ***
 ### Thist test checks feature that is not ready (no documentation added)
@@ -108,7 +110,6 @@ Should be impossible to create new account with no Email
     And User provides account data (no Email)
     Then User submits Sign up data
     And Close Browser
-
 
 #### Thist test checks feature that is not ready (new account creation)
 Should be impossible to create new account with no Password

@@ -1,116 +1,104 @@
 *** Settings ***
-Documentation     A resource file with reusable keywords and variables.
-Library           SeleniumLibrary
-
-*** Variables ***
-${SERVER}  http://127.0.0.1:8000/
-${BROWSER}  chrome
-${TITLE}  PMDB
-${DELAY}  0
-${VALID USER}  dabro
-${VALID PASSWORD}  dupa123
-${INVALID USER}  dabro123
-${INVALID PASSWORD}  dupa321
-${LOGIN URL}  ${SERVER}
-${WELCOME URL}  http://${SERVER}/projects/
-${HEADER}  Project Management Database
-${DESCRIPTION}   Application for License-In and R&D projects, unified solution to collect data, manage harmonograms and budgets, track progress, archive data. All in one place.
-${NEW USER NAME}  New
-${NEW USER LAST NAME}  User
-${NEW USER EMAIL}  new.user@adamed.com
-${NEW USER PASS}  newadmin123
-
+Documentation  A resource file with reusable keywords and variables.
+Library  SeleniumLibrary
+Variables  ../Variables/login_Variables.py
 *** Keywords ***
 Open Browser To Login Page
-    Open Browser  ${LOGIN URL}  ${BROWSER}
+    Open Browser  ${LOGIN_URL}  ${BROWSER}
     Maximize Browser Window
     Set Selenium Speed   ${DELAY}
     Login Page Should Be Open
 
 Login Page Should Be Open
-    Title Should Be    PMDB
-    Element Should Be Visible  xpath: //h1[@class="header"]
-    ${H1 TEXT}  Get text  xpath: //h1[@class="header"]
-    Should Be Equal As Strings  ${HEADER}  ${H1 TEXT}
-    ${P TEXT}  Get text  xpath: //p[@class="description"]
-    Should Be Equal As Strings  ${DESCRIPTION}  ${P TEXT}
+    Title Should Be  ${TITLE}
+    Element Should Be Visible  ${H1_PMDB}
+    ${H1 TEXT}  Get text  ${H1_PMDB}
+    Should Be Equal As Strings  ${HEADER}  ${H1_TEXT}
+    ${P TEXT}  Get text  ${P_DESC}
+    Should Be Equal As Strings  ${DESCRIPTION}  ${P_TEXT}
 
 User clicks Documentation button
-    Element Should Be Visible  xpath: //span[@class="icon documentation-icon"]/parent::button
-    Click Element  xpath: //span[@class="icon documentation-icon"]/parent::button
+    Element Should Be Visible  ${BUTTON_DOC}
+    Click Element  ${BUTTON_DOC}
 
 User clicks Contact button
-    Element Should Be Visible  xpath: //span[@class="icon contact-icon"]/parent::button
-    Click Element  xpath: //span[@class="icon contact-icon"]/parent::button
+    Element Should Be Visible  ${BUTTON_CONTACT}
+    Click Element  ${BUTTON_CONTACT}
 
 Open Login Tab
-    Click Element  xpath://button[@id="signInDropdownMenuButton"]
+    Element Should Be Visible  ${BUTTON_SIGNIN}
+    Click Element  ${BUTTON_SIGNIN}
 
 Input Valid Username
-    Input Text  xpath://input[@id="id_username"]  ${VALID USER}
+    Element Should Be Visible  ${INPUT_USER}
+    Input Text  ${INPUT_USER}  ${VALID_USER}
 
 Input Valid Password
-    Input Text    xpath://input[@id="id_password"]  ${VALID PASSWORD}
+    Element Should Be Visible  ${INPUT_PASS}
+    Input Text  ${INPUT_PASS}  ${VALID_PASSWORD}
 
 Input Invalid Username
-    Input Text  xpath://input[@id="id_username"]  ${INVALID USER}
+    Element Should Be Visible  ${INPUT_USER}
+    Input Text  ${INPUT_USER}  ${INVALID_USER}
 
 Input Invalid Password
-    Input Text  xpath://input[@id="id_password"]  ${INVALID PASSWORD}
+    Element Should Be Visible  ${INPUT_PASS}
+    Input Text  ${INPUT_PASS}  ${INVALID_PASSWORD}
 
 Submit Credentials
-    Click Element  xpath: //*[contains(text(), "Log in")]
+    Element Should Be Visible  ${BUTTON_LOGIN}
+    Click Element  ${BUTTON_LOGIN}
 
 Show login error
-    Element Should Be Visible  xpath://div[@class="alert alert-info"]
+    Element Should Be Visible  ${DIV_ALERT}
 
 Project page should be opened
-    Element Should Be Visible  xpath: //img[@title="Projects"]
+    Element Should Be Visible  ${IMG_PROJECTS}
 
 Documentation is shwon
-    Element Should Be Visible  xpath: //span[@class="icon documentation-icon"]/parent::button
+    Element Should Be Visible  ${BUTTON_DOC}
 
 Contact form/ data is shown
-    Element Should Be Visible  xpath: //span[@class="icon contact-icon"]/parent::button
+    Element Should Be Visible  ${BUTTON_CONTACT}
 
 User clicks Forgot Password?
     Open Login Tab
-    Element Should Be Visible  xpath: //*[contains(text(), "Forgot Password?")]
-    Click Element  xpath: //*[contains(text(), "Forgot Password?")]
+    Element Should Be Visible  ${A_FORGOT}
+    Click Element  ${A_FORGOT}
 
 User clicks Create an account
     Open Login Tab
-    Element Should Be Visible  xpath: //*[contains(text(), "Create an account")]
-    Click Element  xpath: //*[contains(text(), "Create an account")]
+    Element Should Be Visible  ${A_CREATE}
+    Click Element  ${A_CREATE}
 
 Show password recovery
-    Element Should Be Visible  xpath: //*[contains(text(), "Forgot Password?")]
+    Element Should Be Visible  ${A_FORGOT}
 
 Input First Name for new account
-    Element Should Be Visible  xpath: //input[@placeholder='First Name']
-    Input Text  xpath: //input[@placeholder='First Name']  ${NEW USER NAME}
+    Element Should Be Visible  ${INPUT_FNAME}
+    Input Text  ${INPUT_FNAME}  ${NEW_USER_NAME}
 
 Input Last Name for new account
-    Element Should Be Visible  xpath: //input[@placeholder='Last Name']
-    Input Text  xpath: //input[@placeholder='Last Name']  ${NEW USER LAST NAME}
+    Element Should Be Visible  ${INPUT_LNAME}
+    Input Text  ${INPUT_LNAME}  ${NEW_USER_LAST_NAME}
 
 Input Email for new account
-    Element Should Be Visible  xpath: //input[@placeholder='Email']
-    Input Text  xpath: //input[@placeholder='Email']  ${NEW USER EMAIL}
+    Element Should Be Visible  ${INPUT_EMAIL}
+    Input Text  ${INPUT_EMAIL}  ${NEW_USER_EMAIL}
 
 Input Password for new account
-    Click Element  xpath: //input[@placeholder='Email']
+    Click Element  ${INPUT_EMAIL}
     Press Keys  None  TAB
     Press Keys  None  TAB
-    Press Keys  None  ${NEW USER PASS}
+    Press Keys  None  ${NEW_USER_PASS}
 
 Input Confirm Password for new account
-    Click Element  xpath: //input[@placeholder='Email']
+    Click Element  ${INPUT_EMAIL}
     Press Keys  None  TAB
     Press Keys  None  TAB
     Press Keys  None  TAB
     Press Keys  None  TAB
-    Press Keys  None  ${NEW USER PASS}
+    Press Keys  None  ${NEW_USER_PASS}
 
 User provides account data (no First Name)
     Input Last Name for new account
@@ -150,15 +138,15 @@ User provides account data
     Input Confirm Password for new account
 
 User clicks Sign up
-    Element Should Be Visible  xpath: //button[@id='signUpDropdownMenuButton']
-    Click Element  xpath: //button[@id='signUpDropdownMenuButton']
+    Element Should Be Visible  ${BUTTON_SIGNUP}
+    Click Element  ${BUTTON_SIGNUP}
 
 User submits Sign up data
-    Element Should Be visible  xpath: //button[@type='submit'][contains(text(), 'Sign up')]
-    Click Element  xpath: //button[@type='submit'][contains(text(), 'Sign up')]
+    Element Should Be visible  ${BUTTON_SIGNUP2}
+    Click Element  ${BUTTON_SIGNUP2}
 
 Show create account form
-    Element Should Not Be Visible  xpath: //*[contains(text(), "Create an account")]
+    Element Should Not Be Visible  ${A_CREATE}
 
 Browser is opened to login page
     Open Browser To Login Page

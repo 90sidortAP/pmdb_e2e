@@ -2,7 +2,8 @@
 Documentation  A test suite for PMDB login page.
 Library  SeleniumLibrary
 Resource  ../Resources/login_Resource.robot
-*** Variables ***
+Variables  ../Variables/login_Variables.py
+Test Teardown  Close Browser
 *** Test Cases ***
 #### Thist test checks feature that is not ready (no documentation added)
 Clicking "Documentation" button should redirect to documentation
@@ -43,5 +44,3 @@ Should be able to add account with Sign up
     And User provides account data
     Then User submits Sign up data
     And Close Browser
-
-*** Keywords ***
